@@ -20,4 +20,9 @@ public class RedisEventProducer implements EventProducer {
     public Observable<Long> publish(String key, String message) {
         return reactive.rpush(key,message);
     }
+
+    public void close() {
+        reactive.close();
+    }
+
 }

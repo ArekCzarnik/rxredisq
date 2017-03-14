@@ -12,12 +12,14 @@ public class RedisEventTest {
         Observable.range(1, 100)
                 .flatMap(integer -> redisEventProducer.publish("sms-gateway::queue", "test" + integer))
                 .toBlocking().subscribe(count -> Assert.assertTrue(count > 0));
+        redisEventProducer.close();
     }
 
     @Test
     public void testConsumer() {
         RedisEventConsumer consumer = new RedisEventConsumer("sms-gateway::queue");
         Observable<String> consume = consumer.consume();
-        consume.take(100).toBlocking().subscribe(s -> System.out.println(s));
+        consume.take(1).toBlocking().subscribe(s -> System.out.println(s));
+        consumer.close();
     }
 }
