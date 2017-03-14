@@ -6,8 +6,6 @@ import com.lambdaworks.redis.api.rx.RedisReactiveCommands;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class RedisEventConsumer implements EventConsumer<String> {
