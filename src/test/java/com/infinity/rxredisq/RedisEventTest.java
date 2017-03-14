@@ -20,11 +20,8 @@ public class RedisEventTest {
     @Test
     public void testConsumer() {
         RedisEventConsumer consumer = new RedisEventConsumer("sms-gateway::queue");
-        Observable<String> consume = consumer.consume();
         consumer.consume().take(100).toBlocking().subscribe(s -> System.out.println(s),
-                throwable -> {
-            System.out.println(throwable);
-        });
+                throwable -> System.out.println(throwable));
         consumer.close();
     }
 }
