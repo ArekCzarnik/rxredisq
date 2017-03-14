@@ -13,15 +13,14 @@ public class RedisEventConsumer implements EventConsumer<String> {
 
     private final RedisReactiveCommands<String, String> reactive;
     private final PublishSubject<String> subject;
-    private final String key;
 
     public RedisEventConsumer(final String key) {
-        this.key = key;
         RedisClient client = RedisClient.create("redis://localhost");
         StatefulRedisConnection<String, String> connection = client.connect();
         reactive = connection.reactive();
         subject = PublishSubject.create();
-        Observable.interval(1, TimeUnit.SECONDS).flatMap(aLong -> reactive.lpop(key)).subscribe(s -> subject.onNext(s));
+        Observable.interval(1, TimeUnit.SECONDS).flatMap(aLong -> reactive.lpop(key))
+                .subscribe(s -> subject.onNext(s),throwable -> subject.onError(throwable));
     }
 
 
