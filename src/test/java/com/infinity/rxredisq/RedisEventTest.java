@@ -4,17 +4,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import rx.Observable;
 
-import java.util.UUID;
-
 public class RedisEventTest {
 
     @Test
     public void testProducer() {
         RedisEventProducer redisEventProducer = new RedisEventProducer();
-        for (int i = 0; i < 100; i++) {
-            Observable<Long> published = redisEventProducer.publish("sms-gateway::queue", "test"+i);
-            Assert.assertTrue(published.toBlocking().single() > 0 );
-        }
+        Observable.range(1, 100)
+                .flatMap(integer -> redisEventProducer.publish("sms-gateway::queue", "test" + integer))
+                .toBlocking().subscribe(count -> Assert.assertTrue(count > 0));
     }
 
     @Test
