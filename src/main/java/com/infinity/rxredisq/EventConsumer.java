@@ -5,5 +5,5 @@ import rx.Observable;
 
 public interface EventConsumer<T> {
 
-    public Observable<T> consume(final String key);
+    public Observable<T> consume();
 }
